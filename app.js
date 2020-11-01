@@ -1,3 +1,5 @@
 const app = require('./config/server.js');
 
-app.listen(3333)
+const server = app.listen(3333);
+
+require('socket.io').listen(server);
