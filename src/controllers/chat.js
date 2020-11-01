@@ -1,3 +1,5 @@
+const { emit } = require("../../config/server");
+
 module.exports.index = (app, req, res) => {
     const { apelido } = req.body;
 
@@ -9,6 +11,14 @@ module.exports.index = (app, req, res) => {
     if (erros) {
         res.render('index', { validacao: erros });
     }
+
+    app.get('io').emit(
+        'msgParaCliente',
+        {
+            apelido,
+            mensagem: ' acabou de entrar no chat!'
+        }
+    );
 
     res.render('chat');
 }
