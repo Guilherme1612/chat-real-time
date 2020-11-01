@@ -1,7 +1,7 @@
 {
   "name": "chat-real-time",
   "version": "1.0.0",
-  "description": "Um chat real-time, com o intuito de conectar pessoas através da comunicação.",
+  "description": "Um chat simples e intuitivo, desenvolvido com a intenção de conectar pessoas.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/Guilherme1612/chat-real-time/issues"
   },
-  "homepage": "https://github.com/Guilherme1612/chat-real-time#readme"
+  "homepage": "https://github.com/Guilherme1612/chat-real-time#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "consign": "^0.1.6",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-validator": "^3.2.0"
+  }
 }
