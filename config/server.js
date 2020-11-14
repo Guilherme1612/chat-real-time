@@ -13,9 +13,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressValidator());
 
 consign()
-    .include('src/routes')
-    .then('src/models')
-    .then('src/controllers')
+    .include('./src/routes')
+    .then('./src/models')
+    .then('./src/controllers')
     .into(app);
 
 module.exports = app;

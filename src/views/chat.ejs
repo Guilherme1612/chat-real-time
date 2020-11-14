@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
-<html lang="pt-br">
+<html lang="pt-BR">
 	<head>
 		<meta charset="UTF-8">
-
+		<meta name="viewport" content="width=devide-width, initial-scale=1.0">
 		<title>Multiroom Chat</title>
 		
 		<!-- JQUERY -->
-		<script src="js/jquery-2.2.1.js"></script>
+		<script src="./js/jquery-2.2.1.js"></script>
 		
 		<!-- bootstrap - link cdn -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	
+		
 		<!-- estilo -->
-		<link href="css/style.css" rel="stylesheet">
+		<link href="./css/chat.css" rel="stylesheet">
 		
 		<script type="text/javascript">
 		
@@ -80,21 +80,8 @@
 			
 			<div class="row participantes" id="participantes" style="display:none">
 				<div class="col-md-1"></div>
-				<div class="col-md-10">
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						Jorge
-					</span>
-					
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						José
-					</span>
-					
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						Fernando
-					</span>
+				<div class="col-md-10" id="pessoas">
+
 				</div>
 				<div class="col-md-1"></div>
                 
@@ -104,12 +91,13 @@
 		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
 			<div class="container">
 				<div class="panel-body campo-mensagem">
-					<form>
+					<form action="" method="POST">
 						<div class="col-md-12">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Mensagem">
+								<input type="hidden" value="<%= apelido %>" id="apelido">
+								<input type="text" class="form-control" id="mensagem" placeholder="Mensagem">
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button">></button>
+									<button class="btn btn-info" type="button" id="enviar-mensagem">></button>
 								</span>
 							</div>
 						</div>
@@ -118,10 +106,19 @@
 			</div>
 		</nav>		
 		
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<script src="./socket.io/socket.io.js"></script>
 		<script>
 			const socket = io('http://localhost:3333')
+
+			$('#enviar-mensagem').click(() => {
+				socket.emit(
+					'msgParaServidor',
+					{	
+						apelido: $('#apelido').val(),
+						mensagem: $('#mensagem').val()
+					}
+				)	
+			})
 
 			socket.on('msgParaCliente', (data) => {
 				let html = '';
@@ -131,6 +128,15 @@
 				html += '</div>';
 
 				$('#dialogos').append(html);
+			});
+
+			socket.on('participantesParaCliente', (data) => {
+				let html = '';
+				html += '<span class="participante">';
+					html += data.apelido;
+				html += '</span>';
+
+				$('#pessoas').append(html);
 			});
 
 		</script>
