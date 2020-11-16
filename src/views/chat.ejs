@@ -1,144 +1,107 @@
 <!DOCTYPE HTML>
 <html lang="pt-BR">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=devide-width, initial-scale=1.0">
-		<title>Multiroom Chat</title>
-		
-		<!-- JQUERY -->
-		<script src="./js/jquery-2.2.1.js"></script>
-		
-		<!-- bootstrap - link cdn -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-		
-		<!-- estilo -->
-		<link href="./css/chat.css" rel="stylesheet">
-		
-		<script type="text/javascript">
-		
-			$(document).ready(function(){
-				$("#exibe_chat").click(function(){
-					$("#conversa").show();
-					$("#participantes").hide();
-					ocultaNavbar();
-				});
-				
-				$("#exibe_participantes").click(function(){
-					$("#participantes").show();
-					$("#conversa").hide();
-					ocultaNavbar();
-				});
-			});
-			
-			function ocultaNavbar(){
-				$("#btn_navbar_toggle").attr("class","navbar-toggle collapsed");
-				$("#navbar-collapse-1").attr("class","navbar-collapse collapse");
-				$("#btn_navbar_toggle").attr("aria-expanded","false");
-				$("#navbar-collapse-1").attr("aria-expanded","false");
-			}
-		</script>
-	</head>
 
-	<body>
-	
-	
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1" id="btn_navbar_toggle">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="#">Multiroom Chat</a>
-				</div>
-				
-				
-				<div class="collapse navbar-collapse" id="navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li>
-							<a href="#" id="exibe_chat">Chat</a>
-						</li>
-						<li>
-							<a href="#" id="exibe_participantes">Participantes</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=devide-width, initial-scale=1.0">
+	<title>Multiroom Chat</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+		integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<link href="./css/chat.css" rel="stylesheet">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand fixed-top navbar-dark bg-info py-3" style="height: 8vh;">
 		<div class="container">
-            <div class="row conversa" id="conversa">
-				<div class="col-md-1"></div>
-				<div class="col-md-10" id="dialogos">
-					
-				</div>
-				<div class="col-md-1"></div>
-                
-            </div>
-			
-			<div class="row participantes" id="participantes" style="display:none">
-				<div class="col-md-1"></div>
-				<div class="col-md-10" id="pessoas">
+			<a class="navbar-brand text-light" href="#">Multiroom Chat</a>
+			<a class="nav-link text-light" href="/">Sair</a>
+		</div>
+	</nav>
 
-				</div>
-				<div class="col-md-1"></div>
-                
-            </div>
-        </div>
-		
-		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-			<div class="container">
-				<div class="panel-body campo-mensagem">
-					<form action="" method="POST">
-						<div class="col-md-12">
-							<div class="input-group">
-								<input type="hidden" value="<%= apelido %>" id="apelido">
-								<input type="text" class="form-control" id="mensagem" placeholder="Mensagem">
-								<span class="input-group-btn">
-									<button class="btn btn-info" type="button" id="enviar-mensagem">></button>
-								</span>
-							</div>
-						</div>
-					</form>
+	<main class="row container mx-auto" style="padding: 0 0 84px 0">
+		<section class="col-lg-2 d-lg-block d-none"></section>
+		<section id="dialogos" class="col-lg-8 col-12"></section>
+		<section aria-live="polite" aria-atomic="true" id="novo-participante" style="min-height: 200px; position: fixed; right: 0;"></section>
+	</main>
+
+	<nav class="navbar bg-custom fixed-bottom py-3">
+		<div class="container px-0">
+			<div class="input-group col-12">
+				<input type="hidden" value="<%= apelido %>" id="apelido">
+				<input type="text" class="form-control rounded-left" id="mensagem" placeholder="Mensagem">
+				<div class="input-group-append">
+					<button class="btn btn-info" type="button" id="enviar-mensagem">
+						<i class="fas fa-paper-plane"></i>
+					</button>
 				</div>
 			</div>
-		</nav>		
-		
-		<script src="./socket.io/socket.io.js"></script>
-		<script>
-			const socket = io('http://localhost:3333')
+		</div>
+	</nav>
 
-			$('#enviar-mensagem').click(() => {
-				socket.emit(
-					'msgParaServidor',
-					{	
-						apelido: $('#apelido').val(),
-						mensagem: $('#mensagem').val()
-					}
-				)	
-			})
+	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+		integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+		crossorigin="anonymous"></script>
+	<script src="./socket.io/socket.io.js"></script>
+	<script>
+		const socket = io('http://localhost:3333')
 
-			socket.on('msgParaCliente', (data) => {
-				let html = '';
-				html += '<div>';
-					html += '<h4>' + data.apelido + '</h4>';
-					html += '<p>' + data.mensagem + '</p>';
-				html += '</div>';
+		$('#enviar-mensagem').click(() => {
+			socket.emit(
+				'msgParaServidor',
+				{
+					apelido: $('#apelido').val(),
+					mensagem: $('#mensagem').val()
+				}
+			);
+			$('#mensagem').val('');
+		})
 
-				$('#dialogos').append(html);
-			});
+		socket.on('msgParaCliente', (data) => {
+			let html = '';
+			html += '<div class="card mt-3">';
+			html += '<div class="card-header">';
+			html += '<h5>' + data.apelido + '</h5>';
+			html += '</div>';
+			html += '<div class="card-body">';
+			html += '<span>' + data.mensagem + '</span>';
+			html += '</div>';
+			html += '</div>';
 
-			socket.on('participantesParaCliente', (data) => {
-				let html = '';
-				html += '<span class="participante">';
-					html += data.apelido;
-				html += '</span>';
+			$('#dialogos').append(html);
+			window.scrollTo(0, document.body.scrollHeight);
+		});
 
-				$('#pessoas').append(html);
-			});
 
-		</script>
-	</body>
+		socket.on('novoParticipante', (data) => {
+			const id = 	Math.ceil(Math.random() * 1000000);
+
+			let html = `
+				<div class="shadow mt-3 mr-3" id="t-${id}" style="min-width: 256px">
+					<div class="toast-header border bg-light rounded-top">
+						<strong class="mr-auto">${data.apelido}</strong>
+						<small>Agora</small>
+						<button type="button" onclick="$('#t-${id}').addClass('toast d-none')" class="ml-2 border-0 mb-1 close" data-dismiss="toast" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="toast-body border rounded-bottom bg-white" >
+						${data.mensagem}
+					</div>
+				</div>
+			`;
+
+			$('#novo-participante').append(html);
+		});
+
+	</script>
+</body>
+
 </html>

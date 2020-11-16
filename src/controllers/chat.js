@@ -11,10 +11,10 @@ module.exports.index = (app, req, res) => {
     }
 
     app.get('io').emit(
-        'msgParaCliente',
+        'novoParticipante',
         {
             apelido,
-            mensagem: ' acabou de entrar no chat!'
+            mensagem: 'Entrou na conversa!'
         }
     );
 

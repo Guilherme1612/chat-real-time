@@ -19,29 +19,14 @@ io.on('connection', (socket) => {
                 apelido: data.apelido,
                 mensagem: data.mensagem 
             }
-        );
-
+        )
         socket.broadcast.emit(
             'msgParaCliente', 
             {
                 apelido: data.apelido,
                 mensagem: data.mensagem 
             }
-        );
-
-        socket.emit(
-            'participantesParaCliente', 
-            {
-                apelido: data.apelido
-            }
-        );
-
-        socket.broadcast.emit(
-            'participantesParaCliente', 
-            {
-                apelido: data.apelido
-            }
-        );
+        )
     });
 
 });
